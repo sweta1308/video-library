@@ -1,11 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useVideo } from "../context/VideoContext";
 import { Pause, PlayArrow } from "@mui/icons-material";
 
 export const Video = () => {
-  const { videoState, setVideoState } = useVideo();
-  const videoEl = useRef();
-  const canvasEl = useRef();
+  const { videoState, setVideoState, videoEl, canvasEl } = useVideo();
 
   const togglePlay = () => {
     const video = videoEl.current;
