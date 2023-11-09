@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useRef, useState } from "react";
 
 const VideoContext = createContext();
 
@@ -10,7 +10,10 @@ export const VideoProvider = ({ children }) => {
     currentTime: 0
   });
 
-  const value = { videoState, setVideoState };
+  const videoEl = useRef();
+  const canvasEl = useRef()
+
+  const value = { videoState, setVideoState, videoEl, canvasEl };
 
   return (
     <VideoContext.Provider value={value}>{children}</VideoContext.Provider>
