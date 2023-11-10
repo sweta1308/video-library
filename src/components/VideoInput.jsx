@@ -31,6 +31,7 @@ export const VideoInput = () => {
           className="block mx-auto w-[300px] mb-[30px] text-md text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-[16px] file:font-bold file:bg-purple-100 file:text-purple-700 file:cursor-pointer hover:file:bg-purple-200"
         />
         <Video />
+        <h3 className="font-extrabold underline">Audio Waveform</h3>
         <div
           className="border-2 border-gray-400 w-full m-5 rounded-sm"
           id="waveform"
