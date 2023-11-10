@@ -84,7 +84,12 @@ export const Video = () => {
         {videoState.videoUrl ? (
           <div>
             <div className="relative">
-              <canvas ref={canvasEl} width="1000" height="560" className="bg-black" />
+              <canvas
+                ref={canvasEl}
+                width={videoEl?.current?.videoWidth}
+                height={videoEl?.current?.videoHeight}
+                className="bg-black"
+              />
               <video
                 ref={videoEl}
                 src={videoState.videoUrl}
