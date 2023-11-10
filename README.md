@@ -1,4 +1,4 @@
-# Video Library
+# Video Player
 
 ## Tech Stack
 * ReactJS
