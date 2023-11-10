@@ -117,6 +117,7 @@ export const Video = () => {
               {videoState.duration ? videoState.duration.toFixed() : "-"}{" "}
               seconds
             </p>
+            <h3 className="font-extrabold underline text-center">Audio Waveform</h3>
           </div>
         ) : (
           <h2 className="text-[32px] text-center font-semibold my-[20px] mb-[50px]">
