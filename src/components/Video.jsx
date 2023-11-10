@@ -40,7 +40,7 @@ export const Video = () => {
         ...videoState,
         duration: e.target.duration,
       });
-      // Audio track exists or not
+
       setWavesurfer({
         ...wavesurfer,
         hasAudio:
@@ -84,14 +84,13 @@ export const Video = () => {
         {videoState.videoUrl ? (
           <div>
             <div className="relative">
-              <canvas ref={canvasEl} width="1000" height="560" />
+              <canvas ref={canvasEl} width="1000" height="560" className="bg-black" />
               <video
                 ref={videoEl}
                 src={videoState.videoUrl}
                 onPlay={updateCanvas}
-                style={{ display: "none" }}
+                className="hidden"
               />
-
               <button
                 onClick={handlePlay}
                 className="absolute z-20 top-0 bottom-0 left-0 right-0"
@@ -115,8 +114,8 @@ export const Video = () => {
             </p>
           </div>
         ) : (
-          <h2 className="text-[32px] text-center font-semibold">
-            No video selected!
+          <h2 className="text-[32px] text-center font-semibold my-[20px] mb-[50px]">
+            Select a video to continue
           </h2>
         )}
       </div>
