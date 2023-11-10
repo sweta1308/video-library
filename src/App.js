@@ -1,5 +1,4 @@
 import "./App.css";
-import { Video } from "./components/Video";
 import { VideoInput } from "./components/VideoInput";
 
 function App() {
@@ -9,7 +8,6 @@ function App() {
         Video Library
       </h1>
       <VideoInput />
-      <Video />
     </div>
   );
 }
