@@ -1,11 +1,14 @@
-import { useEffect } from "react";
-import { useVideo } from "../context/VideoContext";
+import { useEffect, useRef } from "react";
 import { Pause, PlayArrow } from "@mui/icons-material";
+import { useVideo } from "../context/VideoContext";
 
 export const Video = () => {
-  const { videoState, setVideoState, videoEl, canvasEl } = useVideo();
+  const { videoState, setVideoState, setWavesurfer, wavesurfer } = useVideo();
 
-  const togglePlay = () => {
+  const videoEl = useRef();
+  const canvasEl = useRef();
+
+  const handlePlay = () => {
     const video = videoEl.current;
     if (videoState.isPlaying) {
       video.pause();
@@ -16,40 +19,64 @@ export const Video = () => {
     }
   };
 
-  useEffect(() => {
-    const video = videoEl?.current;
+  const updateCanvas = () => {
     const ctx = canvasEl?.current?.getContext("2d");
-
-    video?.addEventListener("loadedmetadata", () =>
-      setVideoState({ ...videoState, duration: video.duration })
+    ctx.drawImage(
+      videoEl?.current,
+      0,
+      0,
+      canvasEl?.current?.width,
+      canvasEl?.current?.height
     );
-    video?.addEventListener("timeupdate", () =>
-      setVideoState({ videoState, currentTime: video.currentTime })
-    );
+    if (!videoState.isPlaying) return;
+    requestAnimationFrame(updateCanvas);
+  };
 
-    const drawFrame = () => {
+  useEffect(() => {
+    const videoRef = videoEl?.current;
+
+    const handleMetadata = (e) => {
+      setVideoState({
+        ...videoState,
+        duration: e.target.duration,
+      });
+      // Audio track exists or not
+      setWavesurfer({
+        ...wavesurfer,
+        hasAudio:
+          e.target.mozHasAudio ||
+          Boolean(e.target.webkitAudioDecodedByteCount) ||
+          Boolean(e.target.audioTracks && e.target.audioTracks.length > 0),
+      });
+    };
+
+    const updateCanvas = () => {
+      const ctx = canvasEl?.current?.getContext("2d");
       ctx?.drawImage(
-        video,
+        videoEl?.current,
         0,
         0,
         canvasEl?.current?.width,
         canvasEl?.current?.height
       );
-      requestAnimationFrame(drawFrame);
+      if (!videoState.isPlaying) return;
+      requestAnimationFrame(updateCanvas);
     };
 
-    drawFrame();
+    updateCanvas();
+
+    if (videoState.videoUrl) {
+      videoRef.src = videoState.videoUrl;
+      videoRef.addEventListener("loadedmetadata", handleMetadata);
+    }
 
     return () => {
-      video?.removeEventListener("loadedmetadata", () =>
-        setVideoState({ ...videoState, duration: video.duration })
-      );
-      video?.removeEventListener("timeupdate", () =>
-        setVideoState({ videoState, currentTime: video.currentTime })
-      );
+      if (videoRef) {
+        videoRef.removeEventListener("loadedmetadata", handleMetadata);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [videoState.videoUrl]);
 
   return (
     <>
@@ -57,23 +84,25 @@ export const Video = () => {
         {videoState.videoUrl ? (
           <div>
             <div className="relative">
+              <canvas ref={canvasEl} width="1000" height="560" />
               <video
                 ref={videoEl}
                 src={videoState.videoUrl}
-                className="w-[1000px] h-[500px]"
+                onPlay={updateCanvas}
+                style={{ display: "none" }}
               />
-              <canvas ref={canvasEl} />
+
               <button
-                onClick={togglePlay}
+                onClick={handlePlay}
                 className="absolute z-20 top-0 bottom-0 left-0 right-0"
               >
                 {videoState.isPlaying ? (
-                  <div className="bg-white w-[60px] mx-auto mb-[100px] opacity-50 rounded-md hover:bg-gray-300 hover:opacity-70">
-                    <Pause sx={{ fontSize: 50 }} />
+                  <div className="bg-white w-[100px] mx-auto opacity-50 rounded-md hover:bg-gray-300 hover:opacity-70">
+                    <Pause sx={{ fontSize: 70 }} />
                   </div>
                 ) : (
-                  <div className="bg-white w-[60px] mx-auto mb-[100px] opacity-50 rounded-md hover:bg-gray-300 hover:opacity-70">
-                    <PlayArrow sx={{ fontSize: 50 }} />
+                  <div className="bg-white w-[100px] mx-auto opacity-50 rounded-md hover:bg-gray-300 hover:opacity-70">
+                    <PlayArrow sx={{ fontSize: 70 }} />
                   </div>
                 )}
               </button>
@@ -81,11 +110,14 @@ export const Video = () => {
 
             <p className="text-[22px] text-center my-[40px]">
               <span className="font-bold">Duration:</span>{" "}
-              {videoEl?.current?.duration.toFixed()} seconds
+              {videoState.duration ? videoState.duration.toFixed() : "-"}{" "}
+              seconds
             </p>
           </div>
         ) : (
-          <h2 className="text-[32px] font-semibold">No video selected!</h2>
+          <h2 className="text-[32px] text-center font-semibold">
+            No video selected!
+          </h2>
         )}
       </div>
     </>
