@@ -32,7 +32,7 @@ export const VideoInput = () => {
         />
         <Video />
         <div
-          className="border-2 border-gray-400 w-full m-5 rounded-sm"
+          className="border-2 border-black w-full m-5 rounded-sm"
           id="waveform"
         ></div>
       </div>

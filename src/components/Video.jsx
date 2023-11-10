@@ -101,11 +101,11 @@ export const Video = () => {
                 className="absolute z-20 top-0 bottom-0 left-0 right-0"
               >
                 {videoState.isPlaying ? (
-                  <div className="bg-white w-[100px] mx-auto opacity-50 rounded-md hover:bg-gray-300 hover:opacity-70">
+                  <div className="bg-white w-[100px] mx-auto opacity-50 rounded-xl hover:bg-gray-300 hover:opacity-70">
                     <Pause sx={{ fontSize: 70 }} />
                   </div>
                 ) : (
-                  <div className="bg-white w-[100px] mx-auto opacity-50 rounded-md hover:bg-gray-300 hover:opacity-70">
+                  <div className="bg-white w-[100px] mx-auto opacity-50 rounded-xl hover:bg-gray-300 hover:opacity-70">
                     <PlayArrow sx={{ fontSize: 70 }} />
                   </div>
                 )}
