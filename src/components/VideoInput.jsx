@@ -23,12 +23,12 @@ export const VideoInput = () => {
 
   return (
     <>
-      <div className="mb-[30px] text-[20px]">
+      <div className="mb-[30px] text-[20px] flex flex-col items-center">
         <input
           type="file"
           accept="video/*"
           onChange={handleChange}
-          className="block w-full mb-[30px] text-md text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-[16px] file:font-bold file:bg-purple-50 file:text-purple-700 file:cursor-pointer hover:file:bg-purple-100"
+          className="block mx-auto w-[300px] mb-[30px] text-md text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-[16px] file:font-bold file:bg-purple-100 file:text-purple-700 file:cursor-pointer hover:file:bg-purple-200"
         />
         <Video />
         <div
